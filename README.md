@@ -2,7 +2,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.0.2](https://img.shields.io/badge/Version-0.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.0](https://img.shields.io/badge/AppVersion-1.25.0-informational?style=flat-square)
+![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.0](https://img.shields.io/badge/AppVersion-1.25.0-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -22,6 +22,97 @@ helm install [RELEASE_NAME] community-charts/mlflow
 _See [configuration](#configuration) below._
 
 _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
+
+> **Tip**: Search all available chart versions using `helm search repo community-charts -l`. Please don't forget to run `helm repo update` before the command.
+
+## Values Files Examples
+
+## Database Migration Values Files Example
+
+Currently database migration only supporting for Postgres DB backend.
+
+```yaml
+backendStore:
+  databaseMigration: true
+```
+
+## AWS Installation Examples
+
+You can use 2 different way to connect your S3 backend.
+
+- First way, you can access to your S3 with IAM user's awsAccessKeyId and awsSecretAccessKey.
+- Second way, you can create an aws role for your service account. And you can assign your role ARN from serviceAccount annotation. You don't need to create or manage IAM user anymore. Please find more information from [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html).
+
+> **Tip**: Please follow [this tutorial](https://aws.amazon.com/getting-started/hands-on/create-connect-postgresql-db/) to create your own RDS postgres cluster.
+
+## S3 Access with awsAccessKeyId and awsSecretAccessKey Values Files Example
+
+```yaml
+backendStore:
+  postgres:
+    enabled: true
+    host: "postgresql-instance1.cg034hpkmmjt.eu-central-1.rds.amazonaws.com"
+    port: 5432
+    database: "mlflow"
+    user: "mlflowuser"
+    password: "Pa33w0rd!"
+
+artifactRoot:
+  s3:
+    enabled: true
+    bucket: "my-mlflow-artifact-root-backend"
+    awsAccessKeyId: "a1b2c3d4"
+    awsSecretAccessKey: "a1b2c3d4"
+```
+
+## S3 Access with AWS EKS Role ARN Values Files Example
+
+> **Tip**: [Associate an IAM role to a service account](https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html)
+
+```yaml
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::account-id:role/iam-role-name"
+  name: "mlflow"
+
+backendStore:
+  postgres:
+    enabled: true
+    host: "postgresql-instance1.cg034hpkmmjt.eu-central-1.rds.amazonaws.com"
+    port: 5432
+    database: "mlflow"
+    user: "mlflowuser"
+    password: "Pa33w0rd!"
+
+artifactRoot:
+  s3:
+    enabled: true
+    bucket: "my-mlflow-artifact-root-backend"
+```
+
+## Azure Cloud Installation Example
+
+> **Tip**: Please follow [this tutorial](https://docs.microsoft.com/en-us/azure/postgresql/tutorial-design-database-using-azure-portal) to create your own postgres database.
+> **Tip**: Please follow [this tutorial](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) to create your azure blob storage and container.
+
+```yaml
+backendStore:
+  postgres:
+    enabled: true
+    host: "mydemoserver.postgres.database.azure.com"
+    port: 5432
+    database: "mlflow"
+    user: "mlflowuser"
+    password: "Pa33w0rd!"
+
+artifactRoot:
+  azureBlob:
+    enabled: true
+    container: "mlflow"
+    storageAccount: "mystorageaccount"
+    accessKey: "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+```
 
 ## Requirements
 
@@ -97,3 +188,15 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
 | tolerations | list | `[]` |  |
+
+## Source Code
+
+* <https://github.com/community-charts/helm-charts>
+* <https://github.com/burakince/mlflow>
+* <https://github.com/mlflow/mlflow>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| burak ince | <burak.ince@linux.org.tr> |  |

@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: burakince/mlflow
   pullPolicy: IfNotPresent
-  tag: "1.24.0"
+  tag: "1.25.1"
 
 imagePullSecrets: []
 nameOverride: ""

@@ -2,7 +2,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.0](https://img.shields.io/badge/AppVersion-1.25.0-informational?style=flat-square)
+![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -166,7 +166,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"burakince/mlflow"` |  |
-| image.tag | string | `"1.24.0"` |  |
+| image.tag | string | `"1.25.1"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
@@ -199,4 +199,4 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| burak ince | <burak.ince@linux.org.tr> |  |
+| Burak Ince | <burak.ince@linux.org.tr> |  |

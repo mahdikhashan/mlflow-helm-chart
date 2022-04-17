@@ -2,7 +2,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -44,6 +44,25 @@ You can use 2 different way to connect your S3 backend.
 - Second way, you can create an aws role for your service account. And you can assign your role ARN from serviceAccount annotation. You don't need to create or manage IAM user anymore. Please find more information from [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html).
 
 > **Tip**: Please follow [this tutorial](https://aws.amazon.com/getting-started/hands-on/create-connect-postgresql-db/) to create your own RDS postgres cluster.
+
+## S3 (Minio) Configuration on Helm Upgrade Command Example
+
+```
+helm upgrade --install mlflow community-charts/mlflow \
+  --set backendStore.databaseMigration=true \
+  --set backendStore.postgres.enabled=true \
+  --set backendStore.postgres.host=postgres-service \
+  --set backendStore.postgres.port=5432 \
+  --set backendStore.postgres.database=postgres \
+  --set backendStore.postgres.user=postgres \
+  --set backendStore.postgres.password=postgres \
+  --set artifactRoot.s3.enabled=true \
+  --set artifactRoot.s3.bucket=mlflow \
+  --set artifactRoot.s3.awsAccessKeyId=minioadmin \
+  --set artifactRoot.s3.awsSecretAccessKey=minioadmin \
+  --set extraEnvVars.MLFLOW_S3_ENDPOINT_URL=http://minio-service:9000 \
+  --set serviceMonitor.enabled=true
+```
 
 ## S3 Access with awsAccessKeyId and awsSecretAccessKey Values Files Example
 
@@ -138,56 +157,69 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{}` |  |
-| artifactRoot.azureBlob.accessKey | string | `""` |  |
-| artifactRoot.azureBlob.connectionString | string | `""` |  |
-| artifactRoot.azureBlob.container | string | `""` |  |
-| artifactRoot.azureBlob.enabled | bool | `false` |  |
-| artifactRoot.azureBlob.path | string | `""` |  |
-| artifactRoot.azureBlob.storageAccount | string | `""` |  |
-| artifactRoot.gcs.bucket | string | `""` |  |
-| artifactRoot.gcs.enabled | bool | `false` |  |
-| artifactRoot.gcs.path | string | `""` |  |
-| artifactRoot.s3.awsAccessKeyId | string | `""` |  |
-| artifactRoot.s3.awsSecretAccessKey | string | `""` |  |
-| artifactRoot.s3.bucket | string | `""` |  |
-| artifactRoot.s3.enabled | bool | `false` |  |
-| artifactRoot.s3.path | string | `""` |  |
-| backendStore.databaseMigration | bool | `false` |  |
-| backendStore.postgres.database | string | `""` |  |
-| backendStore.postgres.enabled | bool | `false` |  |
-| backendStore.postgres.host | string | `""` |  |
-| backendStore.postgres.password | string | `""` |  |
-| backendStore.postgres.port | int | `5432` |  |
-| backendStore.postgres.user | string | `""` |  |
-| extraArgs | object | `{"exposePrometheus":"/mlflow/metrics"}` | A map of arguments and values to pass to the `mlflow server` command Keys must be camelcase. Helm will turn them to kebabcase style. |
-| extraEnvVars | object | `{}` |  |
+| affinity | object | `{}` | Set the affinity for the pod. |
+| artifactRoot.azureBlob.accessKey | string | `""` | Azure Cloud Storage Account Access Key for the container |
+| artifactRoot.azureBlob.connectionString | string | `""` | Azure Cloud Connection String for the container. Only onnectionString or accessKey required |
+| artifactRoot.azureBlob.container | string | `""` | Azure blob container name |
+| artifactRoot.azureBlob.enabled | bool | `false` | Specifies if you want to use Azure Blob Storage Mlflow Artifact Root |
+| artifactRoot.azureBlob.path | string | `""` | Azure blobk container folder. If you want to use root level, please don't set anything. |
+| artifactRoot.azureBlob.storageAccount | string | `""` | Azure storage account name |
+| artifactRoot.gcs.bucket | string | `""` | Google Cloud Storage bucket name |
+| artifactRoot.gcs.enabled | bool | `false` | Specifies if you want to use Google Cloud Storage Mlflow Artifact Root |
+| artifactRoot.gcs.path | string | `""` | Google Cloud Storage bucket folder. If you want to use root level, please don't set anything. |
+| artifactRoot.s3.awsAccessKeyId | string | `""` | AWS IAM user AWS_ACCESS_KEY_ID which has attached policy for access to the S3 bucket |
+| artifactRoot.s3.awsSecretAccessKey | string | `""` | AWS IAM user AWS_SECRET_ACCESS_KEY which has attached policy for access to the S3 bucket |
+| artifactRoot.s3.bucket | string | `""` | S3 bucket name |
+| artifactRoot.s3.enabled | bool | `false` | Specifies if you want to use AWS S3 Mlflow Artifact Root |
+| artifactRoot.s3.path | string | `""` | S3 bucket folder. If you want to use root level, please don't set anything. |
+| backendStore.databaseMigration | bool | `false` | Specifies if you want to run database migration |
+| backendStore.postgres.database | string | `""` | mlflow database name created before in the postgres instance |
+| backendStore.postgres.enabled | bool | `false` | Specifies if you want to use postgres backend storage |
+| backendStore.postgres.host | string | `""` | Postgres host address. e.g. your RDS or Azure Postgres Service endpoint |
+| backendStore.postgres.password | string | `""` | postgres database user password which can access to mlflow database |
+| backendStore.postgres.port | int | `5432` | Postgres service port |
+| backendStore.postgres.user | string | `""` | postgres database user name which can access to mlflow database |
+| extraArgs | object | `{}` | A map of arguments and values to pass to the `mlflow server` command Keys must be camelcase. Helm will turn them to kebabcase style. |
+| extraContainers | list | `[]` | Extra containers for the mlflow pod |
+| extraEnvVars | object | `{}` | Extra environment variables |
 | extraSecretNamesForEnvFrom | list | `[]` |  |
-| fullnameOverride | string | `""` |  |
-| image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"burakince/mlflow"` |  |
-| image.tag | string | `"1.25.1"` |  |
-| imagePullSecrets | list | `[]` |  |
-| ingress.annotations | object | `{}` |  |
+| extraVolumeMounts | string | `nil` | Extra Volume Mounts for the mlflow container |
+| extraVolumes | string | `nil` | Extra Volumes for the pod |
+| fullnameOverride | string | `""` | String to override the default generated fullname |
+| image.pullPolicy | string | `"IfNotPresent"` | The docker image pull policy |
+| image.repository | string | `"burakince/mlflow"` | The docker image repository to use |
+| image.tag | string | `"1.25.1"` | The docker image tag to use |
+| imagePullSecrets | list | `[]` | Image pull secrets for private docker registry usages |
+| ingress.annotations | object | `{}` | Additional ingress annotations |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| ingress.tls | list | `[]` |  |
-| nameOverride | string | `""` |  |
-| nodeSelector | object | `{}` |  |
-| podAnnotations | object | `{}` |  |
-| podSecurityContext | object | `{}` |  |
-| replicaCount | int | `1` |  |
-| resources | object | `{}` |  |
-| securityContext | object | `{}` |  |
-| service.port | int | `80` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `""` |  |
-| tolerations | list | `[]` |  |
+| ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` | Ingress hosts |
+| ingress.hosts[0].paths | list | `[{"path":"/","pathType":"ImplementationSpecific"}]` | Ingress paths |
+| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` | Ingress path type |
+| ingress.tls | list | `[]` | Ingress tls configuration for https access |
+| initContainers | list | `[]` | Init Containers for Mlflow Pod |
+| nameOverride | string | `""` | String to override the default generated name |
+| nodeSelector | object | `{}` | Set the node selector for the pod. |
+| podAnnotations | object | `{}` | Annotations for the pod |
+| podSecurityContext | object | `{}` | Security context for all pod |
+| replicaCount | int | `1` | (int) Numbers of replicas |
+| resources | object | `{}` | Set the resources requests and limits |
+| securityContext | object | `{}` | Security context for the mlflow container |
+| service.port | int | `5000` | Default Service port |
+| service.type | string | `"ClusterIP"` | Specifies what type of Service should be created |
+| serviceAccount.annotations | object | `{}` | Annotations to add to the service account. AWS EKS users can assign role arn from here. |
+| serviceAccount.create | bool | `true` | Specifies whether a ServiceAccount should be created |
+| serviceAccount.name | string | `""` | The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template |
+| serviceMonitor.enabled | bool | `false` | When set true then use a ServiceMonitor to configure scraping |
+| serviceMonitor.interval | string | `"30s"` | Set how frequently Prometheus should scrape |
+| serviceMonitor.labels | object | `{"release":"prometheus"}` | Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator |
+| serviceMonitor.labels.release | string | `"prometheus"` | default `kube prometheus stack` helm chart serviceMonitor selector label Please find more information from here: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/troubleshooting.md#troubleshooting-servicemonitor-changes |
+| serviceMonitor.metricRelabelings | list | `[]` |  |
+| serviceMonitor.namespace | string | `"monitoring"` | Set the namespace the ServiceMonitor should be deployed |
+| serviceMonitor.targetLabels | list | `[]` | Set of labels to transfer on the Kubernetes Service onto the target. |
+| serviceMonitor.telemetryPath | string | `"/metrics"` | Set path to mlflow telemtery-path |
+| serviceMonitor.timeout | string | `"10s"` | Set timeout for scrape |
+| tolerations | list | `[]` | Set the tolerations for the pod. |
 
 ## Source Code
 

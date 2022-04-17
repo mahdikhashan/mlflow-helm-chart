@@ -44,6 +44,25 @@ You can use 2 different way to connect your S3 backend.
 
 > **Tip**: Please follow [this tutorial](https://aws.amazon.com/getting-started/hands-on/create-connect-postgresql-db/) to create your own RDS postgres cluster.
 
+## S3 (Minio) Configuration on Helm Upgrade Command Example
+
+```
+helm upgrade --install mlflow community-charts/mlflow \
+  --set backendStore.databaseMigration=true \
+  --set backendStore.postgres.enabled=true \
+  --set backendStore.postgres.host=postgres-service \
+  --set backendStore.postgres.port=5432 \
+  --set backendStore.postgres.database=postgres \
+  --set backendStore.postgres.user=postgres \
+  --set backendStore.postgres.password=postgres \
+  --set artifactRoot.s3.enabled=true \
+  --set artifactRoot.s3.bucket=mlflow \
+  --set artifactRoot.s3.awsAccessKeyId=minioadmin \
+  --set artifactRoot.s3.awsSecretAccessKey=minioadmin \
+  --set extraEnvVars.MLFLOW_S3_ENDPOINT_URL=http://minio-service:9000 \
+  --set serviceMonitor.enabled=true
+```
+
 ## S3 Access with awsAccessKeyId and awsSecretAccessKey Values Files Example
 
 ```yaml

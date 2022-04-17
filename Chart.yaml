@@ -51,19 +51,19 @@ keywords:
   - mlflow-kube
 
 annotations:
-  "artifacthub.io/links": |
+  artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/community-charts/helm-charts
     - name: Upstream Project
       url: https://github.com/burakince/mlflow
-  "artifacthub.io/containsSecurityUpdates": "false"
-  "artifacthub.io/changes": |
-    - Update to appVersion: "1.25.1"
-  "artifacthub.io/images": |
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/changes: |
+    - Update to appVersion: 1.25.1
+  artifacthub.io/images: |
     - name: mlflow
       image: burakince/mlflow
-  "artifacthub.io/license": MIT
-  "artifacthub.io/maintainers": |
+  artifacthub.io/license: MIT
+  artifacthub.io/maintainers: |
     - name: Burak Ince
       email: burak.ince@linux.org.tr
 

@@ -141,10 +141,8 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  # -- Ingress hosts
   hosts:
     - host: chart-example.local
-      # -- Ingress paths
       paths:
         - path: /
           # -- Ingress path type
@@ -180,7 +178,8 @@ serviceMonitor:
   # -- Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator
   labels:
     # -- default `kube prometheus stack` helm chart serviceMonitor selector label
-    # Please find more information from here: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/troubleshooting.md#troubleshooting-servicemonitor-changes
+    # Mostly it's your prometheus helm release name. Please find more information from here: 
+    # https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/troubleshooting.md#troubleshooting-servicemonitor-changes
     release: prometheus
   # -- Set timeout for scrape
   timeout: 10s

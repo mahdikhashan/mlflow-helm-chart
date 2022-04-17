@@ -2,7 +2,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -47,7 +47,7 @@ You can use 2 different way to connect your S3 backend.
 
 ## S3 (Minio) Configuration on Helm Upgrade Command Example
 
-```
+```console
 helm upgrade --install mlflow community-charts/mlflow \
   --set backendStore.databaseMigration=true \
   --set backendStore.postgres.enabled=true \
@@ -193,8 +193,8 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | ingress.annotations | object | `{}` | Additional ingress annotations |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` | Ingress hosts |
-| ingress.hosts[0].paths | list | `[{"path":"/","pathType":"ImplementationSpecific"}]` | Ingress paths |
+| ingress.hosts[0].host | string | `"chart-example.local"` |  |
+| ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` | Ingress path type |
 | ingress.tls | list | `[]` | Ingress tls configuration for https access |
 | initContainers | list | `[]` | Init Containers for Mlflow Pod |
@@ -213,7 +213,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | serviceMonitor.enabled | bool | `false` | When set true then use a ServiceMonitor to configure scraping |
 | serviceMonitor.interval | string | `"30s"` | Set how frequently Prometheus should scrape |
 | serviceMonitor.labels | object | `{"release":"prometheus"}` | Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator |
-| serviceMonitor.labels.release | string | `"prometheus"` | default `kube prometheus stack` helm chart serviceMonitor selector label Please find more information from here: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/troubleshooting.md#troubleshooting-servicemonitor-changes |
+| serviceMonitor.labels.release | string | `"prometheus"` | default `kube prometheus stack` helm chart serviceMonitor selector label Mostly it's your prometheus helm release name. Please find more information from here:  https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/troubleshooting.md#troubleshooting-servicemonitor-changes |
 | serviceMonitor.metricRelabelings | list | `[]` |  |
 | serviceMonitor.namespace | string | `"monitoring"` | Set the namespace the ServiceMonitor should be deployed |
 | serviceMonitor.targetLabels | list | `[]` | Set of labels to transfer on the Kubernetes Service onto the target. |
@@ -231,4 +231,4 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Burak Ince | <burak.ince@linux.org.tr> |  |
+| Burak Ince | <burak.ince@linux.org.tr> | <https://www.burakince.net> |

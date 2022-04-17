@@ -57,7 +57,7 @@ annotations:
     - name: Upstream Project
       url: https://github.com/burakince/mlflow
   "artifacthub.io/containsSecurityUpdates": "false"
-  "artifacthub.io/changes:" |
+  "artifacthub.io/changes": |
     - Update to appVersion: "1.25.1"
   "artifacthub.io/images": |
     - name: mlflow

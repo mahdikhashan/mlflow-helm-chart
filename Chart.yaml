@@ -58,7 +58,7 @@ annotations:
       url: https://github.com/burakince/mlflow
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
-    - Update to appVersion: 1.25.1
+    - Update to AppVersion 1.25.1
   artifacthub.io/images: |
     - name: mlflow
       image: burakince/mlflow
@@ -66,5 +66,26 @@ annotations:
   artifacthub.io/maintainers: |
     - name: Burak Ince
       email: burak.ince@linux.org.tr
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/screenshots: |
+    - title: Quickstart UI screenshot
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/quickstart-ui-screenshot.png
+    - title: OSS registry 1 register
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/oss_registry_1_register.png
+    - title: OSS Registry 2 dialog
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/oss_registry_2_dialog.png
+    - title: OSS Registry 3 overview
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/oss_registry_3_overview.png
+    - title: OSS Registry 3b version
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/oss_registry_3b_version.png
+    - title: OSS Registry 3c version
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/oss_registry_3c_version.png
+    - title: OSS Registry 4 version
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/oss_registry_4_version.png
+    - title: OSS Registry 5 transition
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/oss_registry_5_transition.png
+    - title: Experiment compare
+      url: https://raw.githubusercontent.com/mlflow/mlflow/master/docs/source/_static/images/tutorial-compare.png
 
 dependencies: []

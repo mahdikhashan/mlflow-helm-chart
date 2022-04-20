@@ -11,8 +11,8 @@ image:
   repository: burakince/mlflow
   # -- The docker image pull policy
   pullPolicy: IfNotPresent
-  # -- The docker image tag to use
-  tag: "1.25.1"
+  # -- The docker image tag to use. Default app version
+  tag: ""
 
 # -- Image pull secrets for private docker registry usages
 imagePullSecrets: []

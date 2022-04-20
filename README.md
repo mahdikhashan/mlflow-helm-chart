@@ -4,7 +4,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
+![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -190,7 +190,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | fullnameOverride | string | `""` | String to override the default generated fullname |
 | image.pullPolicy | string | `"IfNotPresent"` | The docker image pull policy |
 | image.repository | string | `"burakince/mlflow"` | The docker image repository to use |
-| image.tag | string | `"1.25.1"` | The docker image tag to use |
+| image.tag | string | `""` | The docker image tag to use. Default app version |
 | imagePullSecrets | list | `[]` | Image pull secrets for private docker registry usages |
 | ingress.annotations | object | `{}` | Additional ingress annotations |
 | ingress.className | string | `""` | New style ingress class name. Only possible if you use K8s 1.18.0 or later version |

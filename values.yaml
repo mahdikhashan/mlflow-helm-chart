@@ -130,12 +130,14 @@ extraEnvVars: {}
   # MLFLOW_GCS_UPLOAD_CHUNK_SIZE - Sets the standard upload chunk size for bigger files in bytes (Default: 104857600 ≙ 100MiB), must be multiple of 256 KB.
   # MLFLOW_GCS_DOWNLOAD_CHUNK_SIZE - Sets the standard download chunk size for bigger files in bytes (Default: 104857600 ≙ 100MiB), must be multiple of 256 K
 
+# -- Extra secrets for environment variables
 extraSecretNamesForEnvFrom: []
 # - my-mlflow-secrets
 
 ingress:
-  # Specifies if you want to create an ingress access
+  # -- Specifies if you want to create an ingress access
   enabled: false
+  # -- New style ingress class name. Only possible if you use K8s 1.18.0 or later version
   className: ""
   # -- Additional ingress annotations
   annotations: {}
@@ -185,7 +187,15 @@ serviceMonitor:
   timeout: 10s
   # -- Set of labels to transfer on the Kubernetes Service onto the target.
   targetLabels: []
+
+  # -- Set of rules to relabel your exist metric labels
   metricRelabelings: []
+    # - sourceLabels: [prometheus_replica]
+    #   regex: (.*)
+    #   targetLabel: another_prometheus_replica
+    #   action: replace
+    # - regex: prometheus_replica
+    #   action: labeldrop
 
 # -- Set the node selector for the pod.
 nodeSelector: {}

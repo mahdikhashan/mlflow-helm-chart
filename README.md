@@ -4,7 +4,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -184,7 +184,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | extraArgs | object | `{}` | A map of arguments and values to pass to the `mlflow server` command Keys must be camelcase. Helm will turn them to kebabcase style. |
 | extraContainers | list | `[]` | Extra containers for the mlflow pod |
 | extraEnvVars | object | `{}` | Extra environment variables |
-| extraSecretNamesForEnvFrom | list | `[]` |  |
+| extraSecretNamesForEnvFrom | list | `[]` | Extra secrets for environment variables |
 | extraVolumeMounts | string | `nil` | Extra Volume Mounts for the mlflow container |
 | extraVolumes | string | `nil` | Extra Volumes for the pod |
 | fullnameOverride | string | `""` | String to override the default generated fullname |
@@ -193,8 +193,8 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | image.tag | string | `"1.25.1"` | The docker image tag to use |
 | imagePullSecrets | list | `[]` | Image pull secrets for private docker registry usages |
 | ingress.annotations | object | `{}` | Additional ingress annotations |
-| ingress.className | string | `""` |  |
-| ingress.enabled | bool | `false` |  |
+| ingress.className | string | `""` | New style ingress class name. Only possible if you use K8s 1.18.0 or later version |
+| ingress.enabled | bool | `false` | Specifies if you want to create an ingress access |
 | ingress.hosts[0].host | string | `"chart-example.local"` |  |
 | ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` | Ingress path type |
@@ -216,7 +216,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | serviceMonitor.interval | string | `"30s"` | Set how frequently Prometheus should scrape |
 | serviceMonitor.labels | object | `{"release":"prometheus"}` | Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator |
 | serviceMonitor.labels.release | string | `"prometheus"` | default `kube prometheus stack` helm chart serviceMonitor selector label Mostly it's your prometheus helm release name. Please find more information from here:  https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/troubleshooting.md#troubleshooting-servicemonitor-changes |
-| serviceMonitor.metricRelabelings | list | `[]` |  |
+| serviceMonitor.metricRelabelings | list | `[]` | Set of rules to relabel your exist metric labels |
 | serviceMonitor.namespace | string | `"monitoring"` | Set the namespace the ServiceMonitor should be deployed |
 | serviceMonitor.targetLabels | list | `[]` | Set of labels to transfer on the Kubernetes Service onto the target. |
 | serviceMonitor.telemetryPath | string | `"/metrics"` | Set path to mlflow telemtery-path |

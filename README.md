@@ -4,7 +4,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.1.54](https://img.shields.io/badge/Version-0.1.54-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.27.0](https://img.shields.io/badge/AppVersion-1.27.0-informational?style=flat-square)
+![Version: 0.1.56](https://img.shields.io/badge/Version-0.1.56-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.27.0.1](https://img.shields.io/badge/AppVersion-1.27.0.1-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -205,7 +205,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | nodeSelector | object | `{}` | Set the node selector for the pod. |
 | podAnnotations | object | `{}` | Annotations for the pod |
 | podSecurityContext | object | `{}` | Security context for all pod |
-| replicaCount | int | `1` | (int) Numbers of replicas |
+| replicaCount | int | `1` | Numbers of replicas |
 | resources | object | `{}` | Set the resources requests and limits |
 | securityContext | object | `{}` | Security context for the mlflow container |
 | service.port | int | `5000` | Default Service port |
@@ -236,4 +236,4 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Burak Ince | <burak.ince@linux.org.tr> | <https://www.burakince.net> |
+| burakince | <burak.ince@linux.org.tr> | <https://www.burakince.net> |

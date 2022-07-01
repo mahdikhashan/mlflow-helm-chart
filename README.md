@@ -4,7 +4,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.1.56](https://img.shields.io/badge/Version-0.1.56-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.27.0.1](https://img.shields.io/badge/AppVersion-1.27.0.1-informational?style=flat-square)
+![Version: 0.1.57](https://img.shields.io/badge/Version-0.1.57-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.27.0.1](https://img.shields.io/badge/AppVersion-1.27.0.1-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -208,9 +208,9 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | replicaCount | int | `1` | Numbers of replicas |
 | resources | object | `{}` | Set the resources requests and limits |
 | securityContext | object | `{}` | Security context for the mlflow container |
+| service.annotations | object | `{}` | Additional service annotations |
 | service.port | int | `5000` | Default Service port |
 | service.type | string | `"ClusterIP"` | Specifies what type of Service should be created |
-| service.annotations | object | `{}` | Additional service annotations |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account. AWS EKS users can assign role arn from here. |
 | serviceAccount.create | bool | `true` | Specifies whether a ServiceAccount should be created |
 | serviceAccount.name | string | `""` | The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template |

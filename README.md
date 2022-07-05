@@ -4,7 +4,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.27.0.3](https://img.shields.io/badge/AppVersion-1.27.0.3-informational?style=flat-square)
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.27.0.4](https://img.shields.io/badge/AppVersion-1.27.0.4-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -205,7 +205,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | nodeSelector | object | `{}` | Set the node selector for the pod. |
 | podAnnotations | object | `{}` | Annotations for the pod |
 | podSecurityContext | object | `{}` | Security context for all pod |
-| replicaCount | int | `1` | Numbers of replicas |
+| replicaCount | int | `1` | (int) Numbers of replicas |
 | resources | object | `{}` | Set the resources requests and limits |
 | securityContext | object | `{}` | Security context for the mlflow container |
 | service.annotations | object | `{}` | Additional service annotations |

@@ -68,20 +68,18 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-            {{- if .Values.extraArgs.staticPrefix }}
-              path: {{ .Values.extraArgs.staticPrefix }}
-            {{- else }}
-              path: /
-            {{- end }}
-              port: 5000
+              path: {{ .Values.extraArgs.staticPrefix | default "/" }}
+              port: http
+          {{- with .Values.livenessProbe }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           readinessProbe:
             httpGet:
-            {{- if .Values.extraArgs.staticPrefix }}
-              path: {{ .Values.extraArgs.staticPrefix }}
-            {{- else }}
-              path: /
-            {{- end }}
-              port: 5000
+              path: {{ .Values.extraArgs.staticPrefix | default "/" }}
+              port: http
+          {{- with .Values.readinessProbe }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:

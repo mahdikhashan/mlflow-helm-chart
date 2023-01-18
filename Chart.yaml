@@ -58,7 +58,7 @@ annotations:
       url: https://github.com/burakince/mlflow
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
-    - Update mlflow image version to 1.29.0
+    - Update Mlflow image version to 1.29.0
   artifacthub.io/images: |
     - name: mlflow
       image: burakince/mlflow:1.29.0

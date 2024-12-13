@@ -19,6 +19,11 @@ should match snapshot of default values:
           app: mlflow
           app.kubernetes.io/instance: mlflow
           app.kubernetes.io/name: mlflow
+      strategy:
+        rollingUpdate:
+          maxSurge: 100%
+          maxUnavailable: 0
+        type: RollingUpdate
       template:
         metadata:
           labels:
@@ -46,18 +51,26 @@ should match snapshot of default values:
             image: burakince/mlflow:1.0.0
             imagePullPolicy: IfNotPresent
             livenessProbe:
+              failureThreshold: 5
               httpGet:
                 path: /
                 port: http
+              initialDelaySeconds: 10
+              periodSeconds: 30
+              timeoutSeconds: 3
             name: mlflow
             ports:
             - containerPort: 5000
               name: http
               protocol: TCP
             readinessProbe:
+              failureThreshold: 5
               httpGet:
                 path: /
                 port: http
+              initialDelaySeconds: 10
+              periodSeconds: 30
+              timeoutSeconds: 3
             resources: {}
             securityContext: {}
           securityContext: {}
@@ -83,6 +96,11 @@ should match snapshot with additional values:
           app: mlflow
           app.kubernetes.io/instance: mlflow
           app.kubernetes.io/name: mlflow
+      strategy:
+        rollingUpdate:
+          maxSurge: 100%
+          maxUnavailable: 0
+        type: RollingUpdate
       template:
         metadata:
           annotations:
@@ -130,18 +148,26 @@ should match snapshot with additional values:
             image: burakince/mlflow:1.0.0
             imagePullPolicy: IfNotPresent
             livenessProbe:
+              failureThreshold: 5
               httpGet:
                 path: /
                 port: http
+              initialDelaySeconds: 10
+              periodSeconds: 30
+              timeoutSeconds: 3
             name: mlflow
             ports:
             - containerPort: 5000
               name: http
               protocol: TCP
             readinessProbe:
+              failureThreshold: 5
               httpGet:
                 path: /
                 port: http
+              initialDelaySeconds: 10
+              periodSeconds: 30
+              timeoutSeconds: 3
             resources:
               limits:
                 cpu: 100m

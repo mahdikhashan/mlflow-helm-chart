@@ -3,7 +3,7 @@
   "additionalProperties": false,
   "properties": {
     "affinity": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Set the affinity for the pod.",
       "required": [],
       "title": "affinity",
@@ -326,7 +326,7 @@
       "type": "object"
     },
     "extraArgs": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "A map of arguments and values to pass to the `mlflow server` command\nKeys must be camelcase. Helm will turn them to kebabcase style.",
       "required": [],
       "title": "extraArgs",
@@ -342,7 +342,7 @@
       "type": "array"
     },
     "extraEnvVars": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Extra environment variables",
       "required": [],
       "title": "extraEnvVars",
@@ -444,7 +444,7 @@
       "additionalProperties": false,
       "properties": {
         "annotations": {
-          "additionalProperties": false,
+          "additionalProperties": true,
           "description": "Additional ingress annotations",
           "required": [],
           "title": "annotations",
@@ -599,21 +599,21 @@
       "type": "string"
     },
     "nodeSelector": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Set the node selector for the pod.",
       "required": [],
       "title": "nodeSelector",
       "type": "object"
     },
     "podAnnotations": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Annotations for the pod",
       "required": [],
       "title": "podAnnotations",
       "type": "object"
     },
     "podSecurityContext": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Security context for all pod",
       "required": [],
       "title": "podSecurityContext",
@@ -665,14 +665,14 @@
       "type": "integer"
     },
     "resources": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Set the resources requests and limits",
       "required": [],
       "title": "resources",
       "type": "object"
     },
     "securityContext": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Security context for the mlflow container",
       "required": [],
       "title": "securityContext",
@@ -682,7 +682,7 @@
       "additionalProperties": false,
       "properties": {
         "annotations": {
-          "additionalProperties": false,
+          "additionalProperties": true,
           "description": "Additional service annotations",
           "required": [],
           "title": "annotations",
@@ -723,7 +723,7 @@
       "additionalProperties": false,
       "properties": {
         "annotations": {
-          "additionalProperties": false,
+          "additionalProperties": true,
           "description": "Annotations to add to the service account. AWS EKS users can assign role arn from here.\nPlease find more information from here:\nhttps://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html",
           "required": [],
           "title": "annotations",
@@ -849,32 +849,9 @@
       "type": "object"
     },
     "strategy": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "This will set the deployment strategy more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
       "properties": {
-        "rollingUpdate": {
-          "additionalProperties": false,
-          "properties": {
-            "maxSurge": {
-              "default": "100%",
-              "required": [],
-              "title": "maxSurge",
-              "type": "string"
-            },
-            "maxUnavailable": {
-              "default": 0,
-              "required": [],
-              "title": "maxUnavailable",
-              "type": "integer"
-            }
-          },
-          "required": [
-            "maxSurge",
-            "maxUnavailable"
-          ],
-          "title": "rollingUpdate",
-          "type": "object"
-        },
         "type": {
           "default": "RollingUpdate",
           "required": [],
@@ -883,8 +860,7 @@
         }
       },
       "required": [
-        "type",
-        "rollingUpdate"
+        "type"
       ],
       "title": "strategy",
       "type": "object"

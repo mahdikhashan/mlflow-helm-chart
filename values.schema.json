@@ -770,20 +770,9 @@
           "type": "string"
         },
         "labels": {
-          "additionalProperties": false,
+          "additionalProperties": true,
           "description": "Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator",
-          "properties": {
-            "release": {
-              "default": "prometheus",
-              "description": "default `kube prometheus stack` helm chart serviceMonitor selector label\nMostly it's your prometheus helm release name. Please find more information from here:\nhttps://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/troubleshooting.md#troubleshooting-servicemonitor-changes",
-              "required": [],
-              "title": "release",
-              "type": "string"
-            }
-          },
-          "required": [
-            "release"
-          ],
+          "required": [],
           "title": "labels",
           "type": "object"
         },

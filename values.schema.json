@@ -397,21 +397,21 @@
           "description": "Sets the standard timeout for transfer operations in seconds (Default: 60). Use -1 for indefinite timeout.",
           "required": [],
           "title": "MLFLOW_GCS_DEFAULT_TIMEOUT",
-          "type": ["integer", "string"]
+          "type": "string"
         },
         "MLFLOW_GCS_UPLOAD_CHUNK_SIZE": {
           "default": "104857600",
           "description": "Sets the standard upload chunk size for bigger files in bytes (Default: 104857600 ≙ 100MiB), must be multiple of 256 KB.",
           "required": [],
           "title": "MLFLOW_GCS_UPLOAD_CHUNK_SIZE",
-          "type": ["integer", "string"]
+          "type": "string"
         },
         "MLFLOW_GCS_DOWNLOAD_CHUNK_SIZE": {
           "default": "104857600",
           "description": "Sets the standard download chunk size for bigger files in bytes (Default: 104857600 ≙ 100MiB), must be multiple of 256 K",
           "required": [],
           "title": "MLFLOW_GCS_DOWNLOAD_CHUNK_SIZE",
-          "type": ["integer", "string"]
+          "type": "string"
         }
       },
       "required": [],
@@ -743,7 +743,7 @@
       "description": "Numbers of replicas",
       "required": [],
       "title": "replicaCount",
-      "type": ["string", "integer"]
+      "type": "integer"
     },
     "resources": {
       "additionalProperties": true,
@@ -1120,7 +1120,7 @@
               "default": 5432,
               "required": [],
               "title": "port",
-              "type": ["string", "integer"]
+              "type": "integer"
             },
             "database": {
               "default": "",

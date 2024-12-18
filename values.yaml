@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=values.schema.json
 # Default values for mlflow.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -34,6 +35,9 @@ serviceAccount:
   # -- Specifies whether a ServiceAccount should be created
   create: true
 
+  # -- Automatically mount a ServiceAccount's API credentials?
+  automount: true
+
   # -- Annotations to add to the service account. AWS EKS users can assign role arn from here.
   # Please find more information from here:
   # https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html
@@ -47,11 +51,11 @@ serviceAccount:
 # -- Annotations for the pod
 podAnnotations: {}
 
-# -- Security context for all pod
+# -- This is for setting Security Context to a Pod. For more information checkout: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 podSecurityContext: {}
   # fsGroup: 2000
 
-# -- Security context for the mlflow container
+# -- This is for setting Security Context to a Container. For more information checkout: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 securityContext: {}
   # capabilities:
   #   drop:
@@ -60,16 +64,18 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# -- This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
-  # -- Specifies what type of Service should be created
+  # -- This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
-  # -- Default Service port
+  # -- This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 5000
   # -- Default Service name
   name: http
   # -- Additional service annotations
   annotations: {}
 
+# -- Mlflow database connection settings
 backendStore:
   # -- Specifies if you want to run database migration
   databaseMigration: false
@@ -109,6 +115,7 @@ backendStore:
     # -- mysql database connection driver. e.g.: "pymysql"
     driver: "pymysql"
 
+# Mlflow blob storage settings
 artifactRoot:
   # -- Specifies if you want to enable proxied artifact storage access
   proxiedArtifactStorage: false
@@ -144,8 +151,44 @@ artifactRoot:
     # -- Google Cloud Storage bucket folder. If you want to use root level, please don't set anything.
     path: "" # optional
 
-# -- A map of arguments and values to pass to the `mlflow server` command
-# Keys must be camelcase. Helm will turn them to kebabcase style.
+# -- Mlflow authentication settings
+auth:
+  # -- Specifies if you want to enable mlflow authentication
+  enabled: false
+  # -- Mlflow admin user username
+  adminUsername: ""
+  # -- Mlflow admin user password
+  adminPassword: ""
+  # -- Default permission for all users. More details: https://mlflow.org/docs/latest/auth/index.html#permissions
+  defaultPermission: READ
+  # -- Default registered authentication app name. If you want to use your custom authentication function, please look at: https://mlflow.org/docs/latest/auth/index.html#custom-authentication
+  appName: "basic-auth"
+  # -- Default authentication function
+  authorizationFunction: "mlflow.server.auth:authenticate_request_basic_auth"
+  # -- SQLite database file
+  sqliteFile: "basic_auth.db"
+  # -- SQLite database folder. Default is user home directory.
+  sqliteFullPath: ""
+  # -- Mlflow authentication INI configuration file path.
+  configPath: "/etc/mlflow/auth.ini"
+  # -- PostgreSQL based centrilised authentication database
+  postgres:
+    # -- Specifies if you want to use postgres auth backend storage
+    enabled: false
+    # -- Postgres host address. e.g. your RDS or Azure Postgres Service endpoint
+    host: "" # required
+    # -- Postgres service port
+    port: 5432 # required
+    # -- mlflow authorization database name created before in the postgres instance
+    database: "" # required
+    # -- postgres database user name which can access to mlflow authorization database
+    user: "" # required
+    # -- postgres database user password which can access to mlflow authorization database
+    password: "" # required
+    # -- postgres database connection driver. e.g.: "psycopg2"
+    driver: ""
+
+# -- A map of arguments and values to pass to the `mlflow server` command. Keys must be camelcase. Helm will turn them to kebabcase style.
 extraArgs: {}
 # Number of gunicorn worker processes to handle requests (default: 4).
   # workers: TEXT
@@ -158,8 +201,7 @@ extraArgs: {}
 # Additional command line options for waitress-serve.
   # waitressOpts: TEXT
 
-# -- A list of flags to pass to `mlflow server` command
-# Items must be camelcase. Helm will turn them to kebabcase style.
+# -- A list of flags to pass to `mlflow server` command. Items must be camelcase. Helm will turn them to kebabcase style.
 extraFlags: []
 # If specified, enables serving of artifact uploads, downloads, and list requests by routing these requests
 # to the storage location that is specified by ‘–artifact-destination’ directly through a proxy.
@@ -203,7 +245,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-# -- Set the resources requests and limits
+# -- This block is for setting up the resource management for the pod more information can be found here: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -247,13 +289,13 @@ serviceMonitor:
     # - regex: prometheus_replica
     #   action: labeldrop
 
-# -- Set the node selector for the pod.
+# -- For more information checkout: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
 nodeSelector: {}
 
-# -- Set the tolerations for the pod.
+# -- For more information checkout: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 tolerations: []
 
-# -- Set the affinity for the pod.
+# -- For more information checkout: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
 affinity: {}
 
 # -- Init Containers for Mlflow Pod

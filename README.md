@@ -4,7 +4,7 @@
 
 A Helm chart for Mlflow open source platform for the machine learning lifecycle
 
-![Version: 0.8.2](https://img.shields.io/badge/Version-0.8.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.19.0](https://img.shields.io/badge/AppVersion-2.19.0-informational?style=flat-square)
+![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.19.0](https://img.shields.io/badge/AppVersion-2.19.0-informational?style=flat-square)
 
 ## Get Helm Repository Info
 
@@ -216,6 +216,27 @@ artifactRoot:
     accessKey: "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
 ```
 
+## Authentication Example
+
+```yaml
+auth:
+  enabled: true
+```
+
+Use following configuration for centralised PosgreSQL DB backend for authentication backend.
+
+```yaml
+auth:
+  enabled: true
+  postgres:
+    enabled: true
+    host: "postgresql--auth-instance1.abcdef1234.eu-central-1.rds.amazonaws.com"
+    port: 5432
+    database: "auth"
+    user: "mlflowauth"
+    password: "A4m1nPa33w0rd!"
+```
+
 ## Requirements
 
 Kubernetes: `>=1.16.0-0`
@@ -240,7 +261,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{}` | Set the affinity for the pod. |
+| affinity | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity |
 | artifactRoot.azureBlob.accessKey | string | `""` | Azure Cloud Storage Account Access Key for the container |
 | artifactRoot.azureBlob.connectionString | string | `""` | Azure Cloud Connection String for the container. Only onnectionString or accessKey required |
 | artifactRoot.azureBlob.container | string | `""` | Azure blob container name |
@@ -256,6 +277,25 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | artifactRoot.s3.bucket | string | `""` | S3 bucket name |
 | artifactRoot.s3.enabled | bool | `false` | Specifies if you want to use AWS S3 Mlflow Artifact Root |
 | artifactRoot.s3.path | string | `""` | S3 bucket folder. If you want to use root level, please don't set anything. |
+| auth | object | `{"adminPassword":"","adminUsername":"","appName":"basic-auth","authorizationFunction":"mlflow.server.auth:authenticate_request_basic_auth","configPath":"/etc/mlflow/auth.ini","defaultPermission":"READ","enabled":false,"postgres":{"database":"","driver":"","enabled":false,"host":"","password":"","port":5432,"user":""},"sqliteFile":"basic_auth.db","sqliteFullPath":""}` | Mlflow authentication settings |
+| auth.adminPassword | string | `""` | Mlflow admin user password |
+| auth.adminUsername | string | `""` | Mlflow admin user username |
+| auth.appName | string | `"basic-auth"` | Default registered authentication app name. If you want to use your custom authentication function, please look at: https://mlflow.org/docs/latest/auth/index.html#custom-authentication |
+| auth.authorizationFunction | string | `"mlflow.server.auth:authenticate_request_basic_auth"` | Default authentication function |
+| auth.configPath | string | `"/etc/mlflow/auth.ini"` | Mlflow authentication INI configuration file path. |
+| auth.defaultPermission | string | `"READ"` | Default permission for all users. More details: https://mlflow.org/docs/latest/auth/index.html#permissions |
+| auth.enabled | bool | `false` | Specifies if you want to enable mlflow authentication |
+| auth.postgres | object | `{"database":"","driver":"","enabled":false,"host":"","password":"","port":5432,"user":""}` | PostgreSQL based centrilised authentication database |
+| auth.postgres.database | string | `""` | mlflow authorization database name created before in the postgres instance |
+| auth.postgres.driver | string | `""` | postgres database connection driver. e.g.: "psycopg2" |
+| auth.postgres.enabled | bool | `false` | Specifies if you want to use postgres auth backend storage |
+| auth.postgres.host | string | `""` | Postgres host address. e.g. your RDS or Azure Postgres Service endpoint |
+| auth.postgres.password | string | `""` | postgres database user password which can access to mlflow authorization database |
+| auth.postgres.port | int | `5432` | Postgres service port |
+| auth.postgres.user | string | `""` | postgres database user name which can access to mlflow authorization database |
+| auth.sqliteFile | string | `"basic_auth.db"` | SQLite database file |
+| auth.sqliteFullPath | string | `""` | SQLite database folder. Default is user home directory. |
+| backendStore | object | `{"databaseConnectionCheck":false,"databaseMigration":false,"mysql":{"database":"","driver":"pymysql","enabled":false,"host":"","password":"","port":3306,"user":""},"postgres":{"database":"","driver":"","enabled":false,"host":"","password":"","port":5432,"user":""}}` | Mlflow database connection settings |
 | backendStore.databaseConnectionCheck | bool | `false` | Add an additional init container, which checks for database availability |
 | backendStore.databaseMigration | bool | `false` | Specifies if you want to run database migration |
 | backendStore.mysql.database | string | `""` | mlflow database name created before in the mysql instance |
@@ -272,10 +312,10 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | backendStore.postgres.password | string | `""` | postgres database user password which can access to mlflow database |
 | backendStore.postgres.port | int | `5432` | Postgres service port |
 | backendStore.postgres.user | string | `""` | postgres database user name which can access to mlflow database |
-| extraArgs | object | `{}` | A map of arguments and values to pass to the `mlflow server` command Keys must be camelcase. Helm will turn them to kebabcase style. |
+| extraArgs | object | `{}` | A map of arguments and values to pass to the `mlflow server` command. Keys must be camelcase. Helm will turn them to kebabcase style. |
 | extraContainers | list | `[]` | Extra containers for the mlflow pod |
 | extraEnvVars | object | `{}` | Extra environment variables |
-| extraFlags | list | `[]` | A list of flags to pass to `mlflow server` command Items must be camelcase. Helm will turn them to kebabcase style. |
+| extraFlags | list | `[]` | A list of flags to pass to `mlflow server` command. Items must be camelcase. Helm will turn them to kebabcase style. |
 | extraSecretNamesForEnvFrom | list | `[]` | Extra secrets for environment variables |
 | extraVolumeMounts | list | `[]` | Extra Volume Mounts for the mlflow container |
 | extraVolumes | list | `[]` | Extra Volumes for the pod |
@@ -294,18 +334,20 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | initContainers | list | `[]` | Init Containers for Mlflow Pod |
 | livenessProbe | object | `{"failureThreshold":5,"initialDelaySeconds":10,"periodSeconds":30,"timeoutSeconds":3}` | Liveness probe configurations. Please look to [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 | nameOverride | string | `""` | String to override the default generated name |
-| nodeSelector | object | `{}` | Set the node selector for the pod. |
+| nodeSelector | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector |
 | podAnnotations | object | `{}` | Annotations for the pod |
-| podSecurityContext | object | `{}` | Security context for all pod |
+| podSecurityContext | object | `{}` | This is for setting Security Context to a Pod. For more information checkout: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
 | readinessProbe | object | `{"failureThreshold":5,"initialDelaySeconds":10,"periodSeconds":30,"timeoutSeconds":3}` | Readiness probe configurations. Please look to [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 | replicaCount | int | `1` | Numbers of replicas |
-| resources | object | `{}` | Set the resources requests and limits |
-| securityContext | object | `{}` | Security context for the mlflow container |
+| resources | object | `{}` | This block is for setting up the resource management for the pod more information can be found here: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ |
+| securityContext | object | `{}` | This is for setting Security Context to a Container. For more information checkout: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
+| service | object | `{"annotations":{},"name":"http","port":5000,"type":"ClusterIP"}` | This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/ |
 | service.annotations | object | `{}` | Additional service annotations |
 | service.name | string | `"http"` | Default Service name |
-| service.port | int | `5000` | Default Service port |
-| service.type | string | `"ClusterIP"` | Specifies what type of Service should be created |
+| service.port | int | `5000` | This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports |
+| service.type | string | `"ClusterIP"` | This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account. AWS EKS users can assign role arn from here. Please find more information from here: https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html |
+| serviceAccount.automount | bool | `true` | Automatically mount a ServiceAccount's API credentials? |
 | serviceAccount.create | bool | `true` | Specifies whether a ServiceAccount should be created |
 | serviceAccount.name | string | `""` | The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template |
 | serviceMonitor.enabled | bool | `false` | When set true then use a ServiceMonitor to configure scraping |
@@ -319,7 +361,7 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 | serviceMonitor.timeout | string | `"10s"` | Set timeout for scrape |
 | serviceMonitor.useServicePort | bool | `false` | When set true then use a service port. On default use a pod port. |
 | strategy | object | `{"rollingUpdate":{"maxSurge":"100%","maxUnavailable":0},"type":"RollingUpdate"}` | This will set the deployment strategy more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy |
-| tolerations | list | `[]` | Set the tolerations for the pod. |
+| tolerations | list | `[]` | For more information checkout: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/ |
 
 **Homepage:** <https://mlflow.org>
 
@@ -331,14 +373,14 @@ helm upgrade [RELEASE_NAME] community-charts/mlflow
 
 ## Chart Development
 
-Please install unittest helm plugin with `helm plugin install https://github.com/quintush/helm-unittest` command and use following command to run helm unit tests.
+Please install unittest helm plugin with `helm plugin install https://github.com/helm-unittest/helm-unittest` command and use following command to run helm unit tests.
 
 ```console
-helm unittest --helm3 --strict --file unittests/*.yaml --file unittests/**/*.yaml charts/mlflow
+helm unittest --strict --file unittests/**/*.yaml charts/mlflow
 ```
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| burakince | <burak.ince@linux.org.tr> | <https://www.burakince.net> |
+| burakince | <burak.ince@linux.org.tr> | <https://www.burakince.com> |

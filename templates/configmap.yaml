@@ -19,6 +19,7 @@ data:
   MYSQL_DATABASE: {{ required "mysql database must be specified" .Values.backendStore.mysql.database }}
 {{- end }}
 
+---
 {{- if and (or .Values.backendStore.postgres.enabled .Values.backendStore.mysql.enabled) .Values.backendStore.databaseMigration }}
 {{- $dbConnectionDriver := "" }}
 {{- if and .Values.backendStore.postgres.enabled .Values.backendStore.postgres.driver }}
@@ -26,7 +27,6 @@ data:
 {{- else if and .Values.backendStore.mysql.enabled .Values.backendStore.mysql.driver }}
   {{- $dbConnectionDriver = printf "+%s" .Values.backendStore.mysql.driver }}
 {{- end }}
----
 apiVersion: v1
 kind: ConfigMap
 metadata:

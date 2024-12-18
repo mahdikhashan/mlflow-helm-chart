@@ -216,6 +216,27 @@ artifactRoot:
     accessKey: "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
 ```
 
+## Authentication Example
+
+```yaml
+auth:
+  enabled: true
+```
+
+Use following configuration for centralised PosgreSQL DB backend for authentication backend.
+
+```yaml
+auth:
+  enabled: true
+  postgres:
+    enabled: true
+    host: "postgresql--auth-instance1.abcdef1234.eu-central-1.rds.amazonaws.com"
+    port: 5432
+    database: "auth"
+    user: "mlflowauth"
+    password: "A4m1nPa33w0rd!"
+```
+
 {{ template "chart.requirementsSection" . }}
 
 ## Uninstall Helm Chart
@@ -242,10 +263,10 @@ helm upgrade [RELEASE_NAME] community-charts/{{ template "chart.name" . }}
 
 ## Chart Development
 
-Please install unittest helm plugin with `helm plugin install https://github.com/quintush/helm-unittest` command and use following command to run helm unit tests.
+Please install unittest helm plugin with `helm plugin install https://github.com/helm-unittest/helm-unittest` command and use following command to run helm unit tests.
 
 ```console
-helm unittest --helm3 --strict --file unittests/*.yaml --file unittests/**/*.yaml charts/{{ template "chart.name" . }}
+helm unittest --strict --file unittests/**/*.yaml charts/{{ template "chart.name" . }}
 ```
 
 {{ template "chart.maintainersSection" . }}

@@ -120,6 +120,9 @@ spec:
           {{- if .Values.serviceMonitor.enabled }}
             - --expose-prometheus=/mlflow/metrics
           {{- end }}
+          {{- if .Values.auth.enabled }}
+            - --app-name={{ .Values.auth.appName }}
+          {{- end }}
           {{- range $key, $value := .Values.extraArgs }}
             - --{{ kebabcase $key }}={{ $value }}
           {{- end }}
@@ -149,6 +152,10 @@ spec:
           env:
             - name: MLFLOW_VERSION
               value: {{ .Values.image.tag | default .Chart.AppVersion | quote }}
+          {{- if .Values.auth.enabled }}
+            - name: MLFLOW_AUTH_CONFIG_PATH
+              value: {{ .Values.auth.configPath | quote }}
+          {{- end }}
           {{- range $key, $value := .Values.extraEnvVars }}
             - name: {{ upper $key }}
               value: {{ $value | quote }}
@@ -162,9 +169,16 @@ spec:
             - secretRef:
                 name: {{ . }}
           {{- end }}
-          {{- with .Values.extraVolumeMounts }}
+          {{- if or .Values.extraVolumeMounts .Values.auth.enabled }}
           volumeMounts:
+            {{- if .Values.auth.enabled }}
+            - name: auth-config-secret
+              mountPath: {{ .Values.auth.configPath | quote }}
+              readOnly: true
+            {{- end }}
+          {{- with .Values.extraVolumeMounts }}
             {{ toYaml . | nindent 12 }}
+          {{- end }}
           {{- end }}
       {{- with .Values.extraContainers }}
         {{- toYaml . | nindent 8 }}
@@ -181,7 +195,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if or (and (or .Values.backendStore.postgres.enabled .Values.backendStore.mysql.enabled) (or .Values.backendStore.databaseConnectionCheck .Values.backendStore.databaseMigration) ) .Values.extraVolumes }}
+      {{- if or (and (or .Values.backendStore.postgres.enabled .Values.backendStore.mysql.enabled) (or .Values.backendStore.databaseConnectionCheck .Values.backendStore.databaseMigration) ) .Values.extraVolumes .Values.auth.enabled }}
       volumes:
         {{- if and (or .Values.backendStore.postgres.enabled .Values.backendStore.mysql.enabled) .Values.backendStore.databaseConnectionCheck }}
         - name: dbchecker
@@ -193,6 +207,11 @@ spec:
         - name: migrations-config
           configMap:
             name: {{ template "mlflow.fullname" . }}-migrations
+        {{- end }}
+        {{- if .Values.auth.enabled }}
+        - name: auth-config-secret
+          secret:
+            name: {{ template "mlflow.fullname" . }}-auth-config-secret
         {{- end }}
       {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}

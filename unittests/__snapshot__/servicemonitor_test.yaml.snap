@@ -9,14 +9,14 @@ should match snapshot of default values:
       namespace: monitoring
     spec:
       endpoints:
-      - interval: 30s
-        path: /metrics
-        scrapeTimeout: 10s
-        targetPort: http
+        - interval: 30s
+          path: /metrics
+          scrapeTimeout: 10s
+          targetPort: http
       jobLabel: mlflow
       namespaceSelector:
         matchNames:
-        - mlflow
+          - mlflow
       selector:
         matchLabels:
           app: mlflow

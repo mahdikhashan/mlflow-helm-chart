@@ -16,10 +16,10 @@ should match snapshot of default values:
       name: mlflow
     spec:
       ports:
-      - name: http
-        port: 5000
-        protocol: TCP
-        targetPort: 5000
+        - name: http
+          port: 5000
+          protocol: TCP
+          targetPort: 5000
       selector:
         app: mlflow
         app.kubernetes.io/instance: mlflow

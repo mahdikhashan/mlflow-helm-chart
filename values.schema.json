@@ -4,7 +4,7 @@
   "properties": {
     "affinity": {
       "additionalProperties": true,
-      "description": "Set the affinity for the pod.",
+      "description": "For more information checkout: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity",
       "required": [],
       "title": "affinity",
       "type": "object"
@@ -94,11 +94,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "enabled",
-            "bucket",
-            "path"
-          ],
+          "required": ["enabled", "bucket", "path"],
           "title": "gcs",
           "type": "object"
         },
@@ -159,12 +155,7 @@
           "type": "object"
         }
       },
-      "required": [
-        "proxiedArtifactStorage",
-        "azureBlob",
-        "s3",
-        "gcs"
-      ],
+      "required": ["proxiedArtifactStorage", "azureBlob", "s3", "gcs"],
       "title": "artifactRoot",
       "type": "object"
     },
@@ -327,7 +318,33 @@
     },
     "extraArgs": {
       "additionalProperties": true,
-      "description": "A map of arguments and values to pass to the `mlflow server` command\nKeys must be camelcase. Helm will turn them to kebabcase style.",
+      "description": "A map of arguments and values to pass to the `mlflow server` command. Keys must be camelcase. Helm will turn them to kebabcase style.",
+      "properties": {
+        "workers": {
+          "default": "4",
+          "required": [],
+          "title": "workers",
+          "type": "string"
+        },
+        "staticPrefix": {
+          "default": "/mlflow",
+          "required": [],
+          "title": "staticPrefix",
+          "type": "string"
+        },
+        "gunicornOpts": {
+          "default": "",
+          "required": [],
+          "title": "gunicornOpts",
+          "type": "string"
+        },
+        "waitressOpts": {
+          "default": "",
+          "required": [],
+          "title": "waitressOpts",
+          "type": "string"
+        }
+      },
       "required": [],
       "title": "extraArgs",
       "type": "object"
@@ -344,6 +361,59 @@
     "extraEnvVars": {
       "additionalProperties": true,
       "description": "Extra environment variables",
+      "properties": {
+        "MLFLOW_S3_IGNORE_TLS": {
+          "default": "true",
+          "required": [],
+          "title": "MLFLOW_S3_IGNORE_TLS",
+          "type": ["boolean", "string"]
+        },
+        "MLFLOW_S3_UPLOAD_EXTRA_ARGS": {
+          "default": "{\"ServerSideEncryption\": \"aws:kms\", \"SSEKMSKeyId\": \"1234\"}",
+          "required": [],
+          "title": "MLFLOW_S3_UPLOAD_EXTRA_ARGS",
+          "type": ["object", "string"]
+        },
+        "AWS_DEFAULT_REGION": {
+          "default": "us-east-1",
+          "required": [],
+          "title": "AWS_DEFAULT_REGION",
+          "type": "string"
+        },
+        "MLFLOW_S3_ENDPOINT_URL": {
+          "default": "http://1.2.3.4:9000",
+          "required": [],
+          "title": "MLFLOW_S3_ENDPOINT_URL",
+          "type": "string"
+        },
+        "AWS_CA_BUNDLE": {
+          "default": "/some/ca/bundle.pem",
+          "required": [],
+          "title": "AWS_CA_BUNDLE",
+          "type": "string"
+        },
+        "MLFLOW_GCS_DEFAULT_TIMEOUT": {
+          "default": "60",
+          "description": "Sets the standard timeout for transfer operations in seconds (Default: 60). Use -1 for indefinite timeout.",
+          "required": [],
+          "title": "MLFLOW_GCS_DEFAULT_TIMEOUT",
+          "type": ["integer", "string"]
+        },
+        "MLFLOW_GCS_UPLOAD_CHUNK_SIZE": {
+          "default": "104857600",
+          "description": "Sets the standard upload chunk size for bigger files in bytes (Default: 104857600 ≙ 100MiB), must be multiple of 256 KB.",
+          "required": [],
+          "title": "MLFLOW_GCS_UPLOAD_CHUNK_SIZE",
+          "type": ["integer", "string"]
+        },
+        "MLFLOW_GCS_DOWNLOAD_CHUNK_SIZE": {
+          "default": "104857600",
+          "description": "Sets the standard download chunk size for bigger files in bytes (Default: 104857600 ≙ 100MiB), must be multiple of 256 K",
+          "required": [],
+          "title": "MLFLOW_GCS_DOWNLOAD_CHUNK_SIZE",
+          "type": ["integer", "string"]
+        }
+      },
       "required": [],
       "title": "extraEnvVars",
       "type": "object"
@@ -392,6 +462,7 @@
       "type": "string"
     },
     "global": {
+      "additionalProperties": true,
       "description": "Global values are values that can be accessed from any chart or subchart by exactly the same name.",
       "required": [],
       "title": "global",
@@ -406,7 +477,8 @@
           "description": "The docker image pull policy",
           "required": [],
           "title": "pullPolicy",
-          "type": "string"
+          "type": "string",
+          "enum": ["IfNotPresent", "Never", "Always"]
         },
         "repository": {
           "default": "burakince/mlflow",
@@ -423,11 +495,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "repository",
-        "pullPolicy",
-        "tag"
-      ],
+      "required": ["repository", "pullPolicy", "tag"],
       "title": "image",
       "type": "object"
     },
@@ -497,10 +565,7 @@
                               "type": "string"
                             }
                           },
-                          "required": [
-                            "path",
-                            "pathType"
-                          ],
+                          "required": ["path", "pathType"],
                           "type": "object"
                         }
                       ],
@@ -511,10 +576,7 @@
                     "type": "array"
                   }
                 },
-                "required": [
-                  "host",
-                  "paths"
-                ],
+                "required": ["host", "paths"],
                 "type": "object"
               }
             ],
@@ -534,13 +596,7 @@
           "type": "array"
         }
       },
-      "required": [
-        "enabled",
-        "className",
-        "annotations",
-        "hosts",
-        "tls"
-      ],
+      "required": ["enabled", "className", "annotations", "hosts", "tls"],
       "title": "ingress",
       "type": "object"
     },
@@ -554,7 +610,7 @@
       "type": "array"
     },
     "livenessProbe": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Liveness probe configurations. Please look to [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).",
       "properties": {
         "failureThreshold": {
@@ -582,12 +638,7 @@
           "type": "integer"
         }
       },
-      "required": [
-        "initialDelaySeconds",
-        "periodSeconds",
-        "timeoutSeconds",
-        "failureThreshold"
-      ],
+      "required": [],
       "title": "livenessProbe",
       "type": "object"
     },
@@ -615,12 +666,47 @@
     "podSecurityContext": {
       "additionalProperties": true,
       "description": "Security context for all pod",
+      "properties": {
+        "runAsUser": {
+          "default": 1000,
+          "required": [],
+          "title": "runAsUser",
+          "type": "integer"
+        },
+        "runAsGroup": {
+          "default": 3000,
+          "required": [],
+          "title": "runAsGroup",
+          "type": "integer"
+        },
+        "fsGroup": {
+          "default": 2000,
+          "required": [],
+          "title": "fsGroup",
+          "type": "integer"
+        },
+        "supplementalGroups": {
+          "items": {
+            "required": []
+          },
+          "required": [],
+          "title": "runAsUser",
+          "type": "array"
+        },
+        "fsGroupChangePolicy": {
+          "default": "OnRootMismatch",
+          "required": [],
+          "title": "fsGroupChangePolicy",
+          "type": "string",
+          "enum": ["OnRootMismatch", "Always"]
+        }
+      },
       "required": [],
       "title": "podSecurityContext",
       "type": "object"
     },
     "readinessProbe": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Readiness probe configurations. Please look to [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).",
       "properties": {
         "failureThreshold": {
@@ -648,25 +734,62 @@
           "type": "integer"
         }
       },
-      "required": [
-        "initialDelaySeconds",
-        "periodSeconds",
-        "timeoutSeconds",
-        "failureThreshold"
-      ],
+      "required": [],
       "title": "readinessProbe",
       "type": "object"
     },
     "replicaCount": {
       "default": 1,
-      "description": "(int) Numbers of replicas",
+      "description": "Numbers of replicas",
       "required": [],
       "title": "replicaCount",
-      "type": "integer"
+      "type": ["string", "integer"]
     },
     "resources": {
       "additionalProperties": true,
-      "description": "Set the resources requests and limits",
+      "description": "This block is for setting up the resource management for the pod more information can be found here: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+      "properties": {
+        "limits": {
+          "additionalProperties": true,
+          "properties": {
+            "cpu": {
+              "default": "500m",
+              "required": [],
+              "title": "cpu",
+              "type": "string"
+            },
+            "memory": {
+              "default": "2Gi",
+              "required": [],
+              "title": "memory",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "limits",
+          "type": "object"
+        },
+        "requests": {
+          "additionalProperties": true,
+          "properties": {
+            "cpu": {
+              "default": "200m",
+              "required": [],
+              "title": "cpu",
+              "type": "string"
+            },
+            "memory": {
+              "default": "1Gi",
+              "required": [],
+              "title": "memory",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "requests",
+          "type": "object"
+        }
+      },
       "required": [],
       "title": "resources",
       "type": "object"
@@ -674,6 +797,56 @@
     "securityContext": {
       "additionalProperties": true,
       "description": "Security context for the mlflow container",
+      "properties": {
+        "allowPrivilegeEscalation": {
+          "default": false,
+          "required": [],
+          "title": "allowPrivilegeEscalation",
+          "type": "boolean"
+        },
+        "readOnlyRootFilesystem": {
+          "default": true,
+          "required": [],
+          "title": "readOnlyRootFilesystem",
+          "type": "boolean"
+        },
+        "runAsNonRoot": {
+          "default": true,
+          "required": [],
+          "title": "runAsNonRoot",
+          "type": "boolean"
+        },
+        "runAsUser": {
+          "default": 1000,
+          "required": [],
+          "title": "runAsUser",
+          "type": "integer"
+        },
+        "capabilities": {
+          "additionalProperties": true,
+          "properties": {
+            "drop": {
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "drop",
+              "type": "array"
+            },
+            "add": {
+              "items": {
+                "required": []
+              },
+              "required": [],
+              "title": "add",
+              "type": "array"
+            }
+          },
+          "required": [],
+          "title": "capabilities",
+          "type": "object"
+        }
+      },
       "required": [],
       "title": "securityContext",
       "type": "object"
@@ -710,12 +883,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "port",
-        "name",
-        "annotations"
-      ],
+      "required": ["type", "port", "name", "annotations"],
       "title": "service",
       "type": "object"
     },
@@ -728,6 +896,13 @@
           "required": [],
           "title": "annotations",
           "type": "object"
+        },
+        "automount": {
+          "default": true,
+          "description": "Automatically mount a ServiceAccount's API credentials?",
+          "required": [],
+          "title": "automount",
+          "type": "boolean"
         },
         "create": {
           "default": true,
@@ -744,11 +919,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "create",
-        "annotations",
-        "name"
-      ],
+      "required": ["create", "automount", "annotations", "name"],
       "title": "serviceAccount",
       "type": "object"
     },
@@ -772,6 +943,14 @@
         "labels": {
           "additionalProperties": true,
           "description": "Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator",
+          "properties": {
+            "release": {
+              "default": "prometheus",
+              "required": [],
+              "title": "release",
+              "type": "string"
+            }
+          },
           "required": [],
           "title": "labels",
           "type": "object"
@@ -845,12 +1024,11 @@
           "default": "RollingUpdate",
           "required": [],
           "title": "type",
-          "type": "string"
+          "type": "string",
+          "enum": ["RollingUpdate", "Recreate"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "title": "strategy",
       "type": "object"
     },
@@ -862,6 +1040,140 @@
       "required": [],
       "title": "tolerations",
       "type": "array"
+    },
+    "auth": {
+      "additionalProperties": false,
+      "description": "Mlflow authentication settings",
+      "properties": {
+        "enabled": {
+          "default": "false",
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "adminUsername": {
+          "default": "",
+          "required": [],
+          "title": "adminUsername",
+          "type": "string"
+        },
+        "adminPassword": {
+          "default": "",
+          "required": [],
+          "title": "adminPassword",
+          "type": "string"
+        },
+        "defaultPermission": {
+          "default": "READ",
+          "required": [],
+          "title": "defaultPermission",
+          "type": "string",
+          "enum": ["READ", "EDIT", "MANAGE", "NO_PERMISSIONS"]
+        },
+        "appName": {
+          "default": "basic-auth",
+          "required": [],
+          "title": "appName",
+          "type": "string"
+        },
+        "authorizationFunction": {
+          "default": "mlflow.server.auth:authenticate_request_basic_auth",
+          "required": [],
+          "title": "authorizationFunction",
+          "type": "string"
+        },
+        "sqliteFile": {
+          "default": "basic_auth.db",
+          "required": [],
+          "title": "sqliteFile",
+          "type": "string"
+        },
+        "sqliteFullPath": {
+          "default": "",
+          "required": [],
+          "title": "sqliteFullPath",
+          "type": "string"
+        },
+        "configPath": {
+          "default": "/etc/mlflow/auth.ini",
+          "required": [],
+          "title": "configPath",
+          "type": "string"
+        },
+        "postgres": {
+          "additionalProperties": false,
+          "description": "PostgreSQL based centrilised authentication database",
+          "properties": {
+            "enabled": {
+              "default": "false",
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "host": {
+              "default": "",
+              "required": [],
+              "title": "host",
+              "type": "string"
+            },
+            "port": {
+              "default": 5432,
+              "required": [],
+              "title": "port",
+              "type": ["string", "integer"]
+            },
+            "database": {
+              "default": "",
+              "required": [],
+              "title": "database",
+              "type": "string"
+            },
+            "user": {
+              "default": "",
+              "required": [],
+              "title": "user",
+              "type": "string"
+            },
+            "password": {
+              "default": "",
+              "required": [],
+              "title": "password",
+              "type": "string"
+            },
+            "driver": {
+              "default": "",
+              "required": [],
+              "title": "driver",
+              "type": "string"
+            }
+          },
+          "required": [
+            "enabled",
+            "host",
+            "port",
+            "database",
+            "user",
+            "password",
+            "driver"
+          ],
+          "title": "postgres",
+          "type": "object"
+        }
+      },
+      "required": [
+        "enabled",
+        "adminUsername",
+        "adminPassword",
+        "defaultPermission",
+        "appName",
+        "authorizationFunction",
+        "sqliteFile",
+        "sqliteFullPath",
+        "configPath",
+        "postgres"
+      ],
+      "title": "auth",
+      "type": "object"
     }
   },
   "required": [
@@ -893,7 +1205,8 @@
     "extraVolumes",
     "extraVolumeMounts",
     "livenessProbe",
-    "readinessProbe"
+    "readinessProbe",
+    "auth"
   ],
   "type": "object"
 }

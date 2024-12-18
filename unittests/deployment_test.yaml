@@ -4,6 +4,14 @@ templates:
   - deployment.yaml
 
 tests:
+  - it: should set replica count integer when it is string
+    set:
+      replicaCount: "5"
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 5
+
   - it: should be custom service account when we do not create it
     set:
       serviceAccount.create: false
@@ -511,6 +519,43 @@ tests:
           path: spec.template.spec.containers[0].readinessProbe.httpGet.port
           value: differentname
 
+  - it: should use authentication settings when auth enabled
+    set:
+      auth.enabled: true
+      auth.appName: my-auth
+      auth.configPath: /my/special/path/my-config.ini
+    release:
+      name: mlflow
+      namespace: mlflow
+    chart:
+      version: 1.0.0
+      appVersion: 1.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args[5]
+          value: --app-name=my-auth
+      - equal:
+          path: spec.template.spec.containers[0].env[1].name
+          value: MLFLOW_AUTH_CONFIG_PATH
+      - equal:
+          path: spec.template.spec.containers[0].env[1].value
+          value: /my/special/path/my-config.ini
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /my/special/path/my-config.ini
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: auth-config-secret
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].readOnly
+          value: true
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: auth-config-secret
+      - equal:
+          path: spec.template.spec.volumes[0].secret.name
+          value: mlflow-auth-config-secret
+
   - it: should match snapshot of default values
     release:
       name: mlflow
@@ -523,6 +568,8 @@ tests:
 
   - it: should match snapshot with additional values
     set:
+      auth:
+        enabled: true
       backendStore:
         databaseMigration: true
         databaseConnectionCheck: true

@@ -738,6 +738,13 @@
       "title": "readinessProbe",
       "type": "object"
     },
+    "namespace": {
+      "default": "default",
+      "description": "namespace for the deployment",
+      "required": [],
+      "title": "namespace",
+      "type": "string"
+    },
     "replicaCount": {
       "default": 1,
       "description": "Numbers of replicas",

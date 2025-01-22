@@ -137,7 +137,7 @@ artifactRoot:
     accessKey: "" # connectionString or accessKey required. Only onnectionString or accessKey required
   s3:
     # -- Specifies if you want to use AWS S3 Mlflow Artifact Root
-    enabled: true
+    enabled: false
     # -- S3 bucket name
     bucket: "mlopsjku" # required
     # -- S3 bucket folder. If you want to use root level, please don't set anything.
@@ -308,20 +308,20 @@ initContainers: [ ]
 extraContainers: [ ]
 
 # -- Extra Volumes for the pod
-extraVolumes: [ ]
-# - name: mlflow-volume
-#   persistentVolumeClaim:
-#     claimName: mlflow-pv-volume
-# - name: example
-#   configMap:
-#     name: example
+extraVolumes:
+  - name: mlflow-volume
+    persistentVolumeClaim:
+      claimName: mlflow-pv-volume
+  - name: example
+    configMap:
+      name: example
 
 # -- Extra Volume Mounts for the mlflow container
-extraVolumeMounts: [ ]
-# - name: mlflow-volume
-#   mountPath: /mlflow/data
-# - name: example
-#   mountPath: /example
+extraVolumeMounts:
+  - name: mlflow-volume
+    mountPath: /mlflow/data
+  - name: example
+    mountPath: /example
 
 # -- Liveness probe configurations. Please look to [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
 livenessProbe:

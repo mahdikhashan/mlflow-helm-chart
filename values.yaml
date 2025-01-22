@@ -88,7 +88,7 @@ backendStore:
 
   postgres:
     # -- Specifies if you want to use postgres backend storage
-    enabled: true
+    enabled: false
     # -- Postgres host address. e.g. your RDS or Azure Postgres Service endpoint
     host: "db-postgresql-nyc1-76809-do-user-15938594-0.f.db.ondigitalocean.com" # required
     # -- Postgres service port

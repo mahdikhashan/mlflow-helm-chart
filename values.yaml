@@ -90,7 +90,7 @@ backendStore:
     # -- Specifies if you want to use postgres backend storage
     enabled: true
     # -- Postgres host address. e.g. your RDS or Azure Postgres Service endpoint
-    host: "http://db-postgresql-nyc1-76809-do-user-15938594-0.f.db.ondigitalocean.com/" # required
+    host: "db-postgresql-nyc1-76809-do-user-15938594-0.f.db.ondigitalocean.com" # required
     # -- Postgres service port
     port: 25060 # required
     # -- mlflow database name created before in the postgres instance

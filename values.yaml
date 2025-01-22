@@ -4,7 +4,7 @@
 # Declare variables to be passed into your templates.
 
 # namespace
-namespace: registry
+namespace: default
 
 # -- (int) Numbers of replicas
 replicaCount: 1

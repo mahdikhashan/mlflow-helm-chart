@@ -213,11 +213,11 @@ extraFlags: [ ]
 # artifactsOnly
 
 # -- Extra environment variables
-extraEnvVars: { }
+extraEnvVars: 
+  MLFLOW_S3_ENDPOINT_URL: https://mlopsjku.nyc3.digitaloceanspaces.com
   # MLFLOW_S3_IGNORE_TLS: true
   # MLFLOW_S3_UPLOAD_EXTRA_ARGS: '{"ServerSideEncryption": "aws:kms", "SSEKMSKeyId": "1234"}'
   # AWS_DEFAULT_REGION: my_region
-  MLFLOW_S3_ENDPOINT_URL: https://mlopsjku.nyc3.digitaloceanspaces.com
   # AWS_CA_BUNDLE: /some/ca/bundle.pem
   # MLFLOW_GCS_DEFAULT_TIMEOUT - Sets the standard timeout for transfer operations in seconds (Default: 60). Use -1 for indefinite timeout.
 # MLFLOW_GCS_UPLOAD_CHUNK_SIZE - Sets the standard upload chunk size for bigger files in bytes (Default: 104857600 ≙ 100MiB), must be multiple of 256 KB.

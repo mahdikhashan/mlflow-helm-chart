@@ -137,15 +137,15 @@ artifactRoot:
     accessKey: "" # connectionString or accessKey required. Only onnectionString or accessKey required
   s3:
     # -- Specifies if you want to use AWS S3 Mlflow Artifact Root
-    enabled: false
+    enabled: true
     # -- S3 bucket name
-    bucket: "mlopsjku" # required
+    bucket: "jkudemo" # required
     # -- S3 bucket folder. If you want to use root level, please don't set anything.
     path: "" # optional
     # -- AWS IAM user AWS_ACCESS_KEY_ID which has attached policy for access to the S3 bucket
-    awsAccessKeyId: "DO00HRJ8C8AC6MLGX4NT" # (awsAccessKeyId and awsSecretAccessKey) or roleArn serviceaccount annotation required
+    awsAccessKeyId: "DO00NT4JDVRLPVHBF7P3" # (awsAccessKeyId and awsSecretAccessKey) or roleArn serviceaccount annotation required
     # -- AWS IAM user AWS_SECRET_ACCESS_KEY which has attached policy for access to the S3 bucket
-    awsSecretAccessKey: "n4p3uOuN2jSKiCbPkwNbKy536F4V9ry2irAPdW" # (awsAccessKeyId and awsSecretAccessKey) or roleArn serviceaccount annotation required
+    awsSecretAccessKey: "NIjxVKruBYRu2CbpXBcOZnO2OcuwY/viQmkrvNc3TZk" # (awsAccessKeyId and awsSecretAccessKey) or roleArn serviceaccount annotation required
   gcs:
     # -- Specifies if you want to use Google Cloud Storage Mlflow Artifact Root
     enabled: false
